@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./style/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <title>vue-boolzapp</title>
+</head>
+<body>
+<div id="app">
+    <div class="chat-container">
+            <div class="left">
+    
+    
+                <div class="header">
+                    <div class="mainUser">
+    
+                        <img src="./img/avatar_io.jpg" alt="main-User-image" class="covImg">
+    
+                    </div>
+                    <div class="user-name">
+    
+                        <p>Sofia</p>
+                    </div>
+    
+                    <ul class="nav-icons">
+                        <li> <i class="fa-solid fa-circle-notch"></i></li>
+                        <li><i class="fa-solid fa-message"></i></li>
+                        <li><i class="fa-solid fa-ellipsis-vertical"></i></li>
+                    </ul>
+    
+                </div>
+    
+                <div class="not-banner">
+    
+                    <div class="circle">
+                        <i class="fa-solid fa-bell-slash"></i>
+                    </div>
+    
+                    <div class="des">
+                        <p>Ricevi notifiche di nuovi messaggi</p>
+                        <p class="sub-des">Attiva notifiche desktop</p>
+                    </div>
+    
+                    
+                        
+    
+                </div>
+    
+    
+    
+    
+    
+    
+                <!-- nav -->
+    
+                <div class="nav-container">
+                    <div>
+                        <input type="text" placeholder="Cerca o inizia una nuova chat" class="input-nav" v-model="searchText" @keyup ="filterContact()">
+                    </div>
+                    
+                    
+                    <div>
+                        <i class="fa-solid fa-magnifying-glass lens" ></i>
+    
+                    </div>
+                </div>
+    
+    
+    
+                <!-- chat list -->
+    
+                <div class="chat-list">
+                    
+    
+    
+                    
+    
+                    
+                    <div  :class="{'active' : index === currentIndex}"  class="block" v-for="(contact,index) in contacts" :key="index" @click="selected(index)">
+                        <div v-if="contact.visible" class="d-flex">
+                            <div class="img-box">
+                                <img :src="'./img/avatar' + contact.avatar + '.jpg'" :alt="'avatar'+contact.name" class="w-100" >
+                            </div>
+                            
+                            <div class="details">
+                                <div class="listHead">
+                                    
+                                    <h6>{{contact.name}}</h6>
+                                    <p class="message">{{contact.messages[contact.messages.length - 1].date}}</p>
+                                    
+                                </div>
+                                <div class="message">
+                                    <p>{{contact.messages[contact.messages.length - 1].message}}</p>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+    
+                    
+    
+    
+                </div>
+    
+    
+            </div>
+            
+            
+            <div class="right">
+                <div class="header">
+
+                   
+                    <div class="mainUser"  >
+    
+                        <img :src="'./img/avatar' + contacts[currentIndex].avatar + '.jpg'" alt="" class="covImg">
+                    </div>
+    
+                        <div class="user-name2">
+                            
+                            <div class="details">
+                                <div class="listHead">
+                                    
+                                    <h6>{{contacts[currentIndex].name}}</h6>
+                                    
+                                </div>
+                                <div class="message">
+                                    <p>Ultimo accesso il {{contacts[currentIndex].messages[contacts[currentIndex].messages.length - 1].date}}</p>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+    
+                    <ul class="nav-icons">
+                        <li><i class="fa-solid fa-magnifying-glass"></i></li>
+                        <li><i class="fa-solid fa-paperclip"></i></li>
+                        <li><i class="fa-solid fa-ellipsis-vertical"></i></li>
+                    </ul>
+    
+                </div>
+    
+                <!-- chatbox -->
+    
+                <div class="chatBox">
+                    <div class="mex" v-for="(item,index) in contacts[currentIndex].messages" :key="index" :class="item.status === 'sent' ? 'my-mex' : 'other-mex'">
+                        
+                        
+                    <p>{{item.message}} <br><span>{{item.date}}</span>
+                    </p>
+                        <div class="dropdown">
+                            <button class="btn " type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
+                              aria-expanded="false" @click="showDrop(index)">
+                              <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <ul class="dropdown-menu drop" :class="{'d-block' : item.show}" aria-labelledby="dropdownMenu2">
+                              <li><button @click="cancellaMessaggio" class="dropdown-item" type="button">Elimina messaggio</button></li>
+                              <li><button class="dropdown-item" type="button">Another action</button></li>
+                            </ul>
+                          </div>
+                            
+                            
+                            
+                                
+                                
+                            
+
+                                
+                                      
+
+                            
+                        
+
+                        
+                    
+                    
+                </div>
+                
+                
+                
+                    
+                    
+                        
+                        
+                        
+                    
+                </div>
+                <!-- chat input -->
+                <div class="chat-input">
+                    <i class="fa-solid fa-face-smile"></i>
+                    <input type="text" placeholder="Scrivi un messaggio" v-model="message" @keyup.enter ="sendMessage()">
+                    <i class="fa-solid fa-microphone"></i>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+
+
+
+    <script src="./js/main.js"></script>
+</body>
+</html>
